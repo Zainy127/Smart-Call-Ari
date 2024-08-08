@@ -7,6 +7,8 @@ const moment = require('moment');
 var ip = require('ip');
 const al = require('./al');
 const bl = require('./bl');
+
+
 const
 {
     builtinModules
@@ -244,8 +246,6 @@ function channelStasisStart(payload)
                         
 
                         sleep(1000).then(() =>{
-
-
                             if (raabtaMap.get(incomingNumber).incoming_channelID == channel.id)
                             {
 

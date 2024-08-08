@@ -4,71 +4,87 @@ const moment = require('moment');
 const axios = require('axios');
 var mysql = require('mysql2');
 
-  
-  console.log("["+moment().format(`YYYY-MM-DD HH:mm:ss`)+"]"+" @@@@@@@@@@@@@@@ scheduler started @@@@@@@@@@@@@ ")         
-     
-  const job = schedule.scheduleJob('0 0 * * *', async() => {
+
+console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + " @@@@@@@@@@@@@@@ scheduler started @@@@@@@@@@@@@ ")
+
+const job = schedule.scheduleJob('0 0 * * *', async () =>
+{
     console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + " creating table every day at 0:0:0 (midnight)")
 
-    try{
-        var db =  mysql.createConnection({
-          host: "127.0.0.1",
-          database: "ari_cdr_raabta",
-          user: "gr_replicationuser",
-          password: "Switch@123@Raabta123",
-          port: "6446"
+    try
+    {
+        var db = mysql.createConnection(
+        {
+            host: "127.0.0.1",
+            database: "ari_cdr_raabta",
+            user: "gr_replicationuser",
+            password: "Switch@123@Raabta123",
+            port: "6446"
         });
-        console.log("["+moment().format(`YYYY-MM-DD HH:mm:ss`)+"]"+'Database ari_cdr_raabta logged in successfully');
-      }catch(err){
-        console.log("["+moment().format(`YYYY-MM-DD HH:mm:ss`)+"]"+'Error logging into db:', err);
+
+
+        console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Database ari_cdr_raabta logged in successfully');
+    }
+    catch (err)
+    {
+        console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Error logging into db:', err);
         process.exit(1);
-      }
+    }
 
-    db.connect((err) => {
-      if (err) {
-        console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Error connecting to database on 1st try:', err);
-        db.connect((err) => {
-            if (err) {
-              console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Error connecting to database on  2nd try:', err);
-              db.connect((err) => {
-                if (err) 
-                {
-                  console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Error connecting to database on 3rd try:', err);
-                  process.exit(1); // exit process on connection error
-                } else {
-                  console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully');
-                  console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully, ' +"Connection thread ID:", db.threadId);
-                  createTable(db);
-                }
-              }); 
-            } 
-            else 
+    db.connect((err) =>
+    {
+        if (err)
+        {
+            console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Error connecting to database on 1st try:', err);
+            db.connect((err) =>
             {
-              
-              console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully, ' +"Connection thread ID:", db.threadId);
-              createTable(db);
-            }
-          }); 
-      } else {
-        // console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully');
-        console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully, ' +"Connection thread ID:", db.threadId);
-        createTable(db);
-      }
-    }); 
-  });
+                if (err)
+                {
+                    console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Error connecting to database on  2nd try:', err);
+                    db.connect((err) =>
+                    {
+                        if (err)
+                        {
+                            console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Error connecting to database on 3rd try:', err);
+                            process.exit(1); // exit process on connection error
+                        }
+                        else
+                        {
+                            console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Database connected successfully');
+                            console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Database connected successfully, ' + "Connection thread ID:", db.threadId);
+                            createTable(db);
+                        }
+                    });
+                }
+                else
+                {
 
+                    console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Database connected successfully, ' + "Connection thread ID:", db.threadId);
+                    createTable(db);
+                }
+            });
+        }
+        else
+        {
+            // console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" +'Database connected successfully');
+            console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + 'Database connected successfully, ' + "Connection thread ID:", db.threadId);
+            createTable(db);
+        }
+    });
+});
 
-async function createTable(connection)  
+async function createTable(connection)
 {
+  
     const currentTime = Date.now();
-    console.log("["+moment().format(`YYYY-MM-DD HH:mm:ss`)+"]"+"  @@@@@@@@@@@@@@@ inside createTable function@@@@@@@@@@@@@")        
+    console.log("[" + moment().format(`YYYY-MM-DD HH:mm:ss`) + "]" + "  @@@@@@@@@@@@@@@ inside createTable function@@@@@@@@@@@@@")
     const date = new Date(currentTime);
-    
+
     const formattedDate = `${date.getFullYear().toString()}_${(date.getMonth() + 1).toString().padStart(2, '0')}_${date.getDate().toString().padStart(2, '0')}`;
     console.log(formattedDate)
 
 
-    const tableName = `ari_cdr_${formattedDate}`;         
+    const tableName = `ari_cdr_${formattedDate}`;
 
     const createTableQuery = `CREATE TABLE IF NOT EXISTS \`${tableName}\` (
     \`AriCdrID\` bigint NOT NULL AUTO_INCREMENT,
@@ -96,16 +112,16 @@ async function createTable(connection)
     KEY \`sessions_i2\` (\`CallEndTime\`) USING BTREE,
     KEY \`idxCtyp\` (\`Call_type\`)
     ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;`;
-  
-      connection.query(createTableQuery, (err, result) => {
-        if (err) 
+
+    connection.query(createTableQuery, (err, result) =>
+    {
+        if (err)
         {
             console.error(`[${moment().format(`YYYY-MM-DD HH:mm:ss`)}] Failed to create table ${tableName}: ${err.message}`);
-        } 
-        else 
+        }
+        else
         {
             console.error(`[${moment().format(`YYYY-MM-DD HH:mm:ss`)}] Table ${tableName} created successfully`);
-        }     
+        }
     });
 }
-

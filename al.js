@@ -8,7 +8,6 @@ const keepaliveAgent = new http.Agent(
 {
     keepAlive: true
 });
-//import camelcaseKeys from 'camelcase-keys';
 
 class al
 {
@@ -17,8 +16,8 @@ class al
         // function for getGlobalBlacklist api call
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] global blacklist API called with " + a_party);
 
-
         let a_party_num = a_party;
+
         let payload = {
             a_party_num
         };
@@ -35,8 +34,8 @@ class al
             .then((response) =>
             {
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus blackLists  api call => ${defaultConfig.prometheusApi}blackLists`);
-                axios.get(`${defaultConfig.prometheusApi}blackLists`,
-                {
+
+                axios.get(`${defaultConfig.prometheusApi}blackLists`,{
                     httpAgent: keepaliveAgent,
                 }).then((response) =>
                 {
@@ -78,17 +77,19 @@ class al
                 });
 
 
-                return new Promise((resolve, reject) =>
-                {
+                return new Promise((resolve, reject) =>{
                     reject(error);
                 })
             });
     }
 
     userSpecificBlacklist(c_party, a_party, uuid)
-    { // function for userSpecificBlacklist api call
+    { 
+
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] userSpecificBlacklist API called with cParty:" + c_party + " & aParty " + a_party);
         let a_party_num = a_party.substring(1);
+
+
         let payload = {
             c_party,
             a_party_num
@@ -153,18 +154,21 @@ class al
     }
 
     getVoiceCallCounter(c_party, uuid)
-    { // function for getVoiceCallCounter api call
+    { 
+        
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] getVoiceCallCounter API called with " + c_party);
         let payload = {
             c_party
         };
         const params = new url.URLSearchParams(payload);
+
         // console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+ map1.get(incomingNumber).uuid+"] Params Sent : " + params);
         let param1 = params.toString();
         let result = param1.replace("c_party=", "");
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] Params Sent : " + result);
-        return axios
-            .get(`${defaultConfig.getVoiceCallCounter}${result}`,
+
+
+        return axios.get(`${defaultConfig.getVoiceCallCounter}${result}`,
             {
                 httpAgent: keepaliveAgent
             })
@@ -182,11 +186,15 @@ class al
     }
 
     updateVoiceCallCounter(c_party, uuid)
-    { // function for updateVoiceCallCounter api call
+    { 
+        // function for updateVoiceCallCounter api call
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] updateVoiceCallCounter API called with " + c_party);
+
+
         let payload = {
             c_party
         };
+
         const params = new url.URLSearchParams(payload);
         let param1 = params.toString();
         let result = param1.replace("c_party=", "");
@@ -275,8 +283,7 @@ class al
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus voicecallprocess  api call => ${defaultConfig.prometheusApi}voicecallprocess`);
 
 
-                axios.get(`${defaultConfig.prometheusApi}voicecallprocess`,
-                {
+                axios.get(`${defaultConfig.prometheusApi}voicecallprocess`,{
                     httpAgent: keepaliveAgent,
                 }).then((response) =>
                 {
@@ -334,7 +341,10 @@ class al
         const pincode = payload.pincode;
         const channel = payload.channel;
         const uuid = payload.uuid;
+
+
         // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+uuid+"]payload recieved  for getPINProcessInfo api " + JSON.stringify(payload));  
+
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] getPINProcessInfo API ==> " + defaultConfig.getPINProcessInfo + cParty + "/" + channel + "/" + pincode + "/" + aParty);
 
 
@@ -380,6 +390,8 @@ class al
 
 
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus ApiNotResponding  api call => ${defaultConfig.prometheusApi}ApiNotResponding`);
+
+
                 axios.get(`${defaultConfig.prometheusApi}ApiNotResponding`,
                 {
                     httpAgent: keepaliveAgent,
@@ -579,28 +591,33 @@ class al
 
 
     routingInfoBparty(payload)
-    { // function for routingInfo api call b-party
+    { 
+        // function for routingInfo api call b-party
         const toNumber = payload.toNumber;
         const fromNumber = payload.fromNumber;
         const uuid = payload.uuid;
         const referenceNo = payload.channelId;
+
+
         // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+uuid+"]payload recieved  " + JSON.stringify(payload));     
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] routingInfo API called with b-party " + payload.toNumber);
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] routingInfo API ==> " + defaultConfig.sendRoutingInfoRequest + "/92" + fromNumber + "/92" + toNumber + "/" + referenceNo);
-        //imsi:  International Mobile Subscriber Identity,
+
+
+        // imsi :  International Mobile Subscriber Identity,
         // IMSI is an internationally standardized number to identify each mobile subscriber.
         // An IMSI number is generally 15 digits, but they can be shorter.
         // The first three digits are the mobile country code, followed by the mobile network code .
         // The remaining digits are the mobile phone number, generally 9-10 digits in length.
-        return axios
-            .get(`${defaultConfig.sendRoutingInfoRequest}92${fromNumber}/92${toNumber}/${referenceNo}`)
-            .then((response) =>
-            {
+
+
+        return axios.get(`${defaultConfig.sendRoutingInfoRequest}92${fromNumber}/92${toNumber}/${referenceNo}`).then((response) =>{
                 if ((response.data.roamingNumber.startsWith("923")))
                 {
-                    // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+ uuid +"] user" + payload.toNumber+"processing");
+                    
                     let data = response.data;
                     console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "]  routingInfo response :  " + JSON.stringify(data));
+
                     return {
                         processCall: "Y",
                         imsi: data.imsi
@@ -614,8 +631,7 @@ class al
                     };
                 }
             })
-            .catch((error) =>
-            {
+            .catch((error) =>{
                 return new Promise((resolve, reject) =>
                 {
                     reject(error);
@@ -712,22 +728,25 @@ class al
     }
 
     oAnswer(payload)
-    { // function for oAnswer api call
-        // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+"]payload recieved for oAnswer API" + JSON.stringify(payload));
+    { 
+
         const toNumber = payload.toNumber;
         const fromNumber = payload.fromNumber;
         const uuid = payload.uuid;
         const referenceNo = payload.channelId;
         const dialogueID = payload.dialogueID;
         const isLandline = payload.isLandline;
+
+
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] oAnswer  api call => ${defaultConfig.OAnswer}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`);
-        return axios
-            .get(`${defaultConfig.OAnswer}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`)
-            .then((response) =>
-            {
+
+
+        return axios.get(`${defaultConfig.OAnswer}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`).then((response) =>{
                 if (response.data)
                 {
+
                     console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus oAnswer  api call => ${defaultConfig.prometheusApi}oAnswer`);
+
                     axios.get(`${defaultConfig.prometheusApi}oAnswer`,
                     {
                         httpAgent: keepaliveAgent,
@@ -741,6 +760,7 @@ class al
 
                     const data = response.data;
                     console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] oAnswer API response" + JSON.stringify(data));
+
                     if (data.maxCallPeriodDuration >= 20)
                     {
                         return {
@@ -759,6 +779,8 @@ class al
             .catch((error) =>
             {
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus oAnswerApiNotResponding  api call => ${defaultConfig.prometheusApi}oAnswerApiNotResponding`);
+
+
                 axios.get(`${defaultConfig.prometheusApi}oAnswerApiNotResponding`,
                 {
                     httpAgent: keepaliveAgent,
@@ -771,6 +793,8 @@ class al
                 });
 
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus ApiNotResponding  api call => ${defaultConfig.prometheusApi}ApiNotResponding`);
+
+
                 axios.get(`${defaultConfig.prometheusApi}ApiNotResponding`,
                 {
                     httpAgent: keepaliveAgent,
@@ -781,9 +805,9 @@ class al
                 {
                     console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] error in Promethus ApiNotResponding api => ", err.message);
                 });
-                // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+ uuid +"]  Error ApiNotResponding ==>  "+ error.message);
-                return new Promise((resolve, reject) =>
-                {
+                
+
+                return new Promise((resolve, reject) =>{
                     reject(error);
                 })
             });
@@ -791,9 +815,11 @@ class al
 
 
     async applyChargingReport(payload)
-    { // function for applyChargingReport api call
-        // console.log(  "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] ["+"]payload recieved for applyChargingReport function" + JSON.stringify(payload)); 
+    { 
+        
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] " + `[ ${payload.uuid} ] applyChargingReport  api call =>  ${defaultConfig.ApplyChargingReport}92${payload.toNumber}/92${payload.fromNumber}/${payload.localDialogueId}/${payload.channelId}/${payload.sequenceNum}/${payload.duration}/${payload.isCall}`);
+
+
         let response = await axios.get(` ${defaultConfig.ApplyChargingReport}92${payload.toNumber}/92${payload.fromNumber}/${payload.localDialogueId}/${payload.channelId}/${payload.sequenceNum}/${payload.duration}/${payload.isCall}`)
             .catch((error) =>
             {
@@ -826,7 +852,9 @@ class al
         if (response)
         {
             let data = response.data;
+            
             console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus ApplyChargingReport  api call => ${defaultConfig.prometheusApi}ApplyChargingReport`);
+
             axios.get(`${defaultConfig.prometheusApi}ApplyChargingReport`,
             {
                 httpAgent: keepaliveAgent,
@@ -840,6 +868,8 @@ class al
 
             console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] " + `[ ${payload.uuid} ] ApplyChargingReport response ${JSON.stringify(data)}`);
             console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] " + `[ ${payload.uuid} ] status ${response.status}`);
+
+
             if (data.continueCall)
             {
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] " + `[ ${payload.uuid} ]ApplyChargingReport { processCall: "Y"} ===== ${payload.toNumber}`);
@@ -873,19 +903,20 @@ class al
 
 
     oAbandon(payload)
-    { // function for oAbandon api call
+    { 
+        // function for oAbandon api call
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + "]payload recieved for oAbandon API" + JSON.stringify(payload));
         const toNumber = payload.toNumber;
         const fromNumber = payload.fromNumber;
         const uuid = payload.uuid;
         const referenceNo = payload.channelId;
         const dialogueID = payload.dialogueID;
-        // console.log( "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "]+" `${uuid} routingInfo check api call => ${defaultConfig.sendRoutingInfoRequest}92${toNumber}/92${fromNumber}/${referenceNo}`);
+
+
+        
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] oAbandon API ==> " + defaultConfig.OAbandon + "92" + toNumber + "/92" + fromNumber + "/" + dialogueID + "/" + referenceNo);
 
-        return axios
-            .get(`${defaultConfig.OAbandon}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`)
-            .then((response) =>
+        return axios.get(`${defaultConfig.OAbandon}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`).then((response) =>
             {
                 if (response.data)
                 {
@@ -943,20 +974,17 @@ class al
 
     OCalledPartyBusy(payload)
     { 
-      // function for OCalledPartyBusy api call
+      
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + "]payload recieved for OCalledPartyBusy API" + JSON.stringify(payload));
         const toNumber = payload.toNumber;
         const fromNumber = payload.fromNumber;
         const uuid = payload.uuid;
         const referenceNo = payload.channelId;
         const dialogueID = payload.dialogueID;
-        // console.log( "[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "]+" `${uuid} routingInfo check api call => ${defaultConfig.sendRoutingInfoRequest}92${toNumber}/92${fromNumber}/${referenceNo}`);
+        
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] OCalledPartyBusy API ==> " + defaultConfig.OCalledPartyBusy + "92" + toNumber + "/92" + fromNumber + "/" + dialogueID + "/" + referenceNo);
 
-        return axios
-            .get(`${defaultConfig.OCalledPartyBusy}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`)
-            .then((response) =>
-            {
+        return axios.get(`${defaultConfig.OCalledPartyBusy}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`).then((response) =>{
                 if (response.data)
                 {
 
@@ -978,11 +1006,12 @@ class al
                     return data;
                 }
             })
-            .catch((error) =>
-            {
+            .catch((error) =>{
+
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus oCalledPartyBusyApiNotResponding  api call => ${defaultConfig.prometheusApi}oCalledPartyBusyApiNotResponding`);
-                axios.get(`${defaultConfig.prometheusApi}oCalledPartyBusyApiNotResponding`,
-                {
+
+
+                axios.get(`${defaultConfig.prometheusApi}oCalledPartyBusyApiNotResponding`,{
                     httpAgent: keepaliveAgent,
                 }).then((response) =>
                 {
@@ -993,8 +1022,9 @@ class al
                 });
 
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus ApiNotResponding  api call => ${defaultConfig.prometheusApi}ApiNotResponding`);
-                axios.get(`${defaultConfig.prometheusApi}ApiNotResponding`,
-                {
+
+
+                axios.get(`${defaultConfig.prometheusApi}ApiNotResponding`,{
                     httpAgent: keepaliveAgent,
                 }).then((response) =>
                 {
@@ -1004,8 +1034,7 @@ class al
                     console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] error in Promethus ApiNotResponding api  => ", err.message);
                 });
 
-                return new Promise((resolve, reject) =>
-                {
+                return new Promise((resolve, reject) =>{
                     reject(error);
                 })
             });
@@ -1024,10 +1053,7 @@ class al
         
         console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + uuid + "] ONoAnswer API ==> " + defaultConfig.ONoAnswer + "92" + fromNumber + "/92" + toNumber + "/" + dialogueID + "/" + referenceNo);
 
-        return axios
-            .get(`${defaultConfig.ONoAnswer}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`)
-            .then((response) =>
-            {
+        return axios.get(`${defaultConfig.ONoAnswer}92${toNumber}/92${fromNumber}/${dialogueID}/${referenceNo}`).then((response) =>{
                 if (response.data)
                 {
 
@@ -1051,8 +1077,9 @@ class al
             .catch((error) =>
             {
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus oNoAnswerApiNotResponding  api call => ${defaultConfig.prometheusApi}oNoAnswerApiNotResponding`);
-                axios.get(`${defaultConfig.prometheusApi}oNoAnswerApiNotResponding`,
-                {
+
+
+                axios.get(`${defaultConfig.prometheusApi}oNoAnswerApiNotResponding`,{
                     httpAgent: keepaliveAgent,
                 }).then((response) =>
                 {
@@ -1064,6 +1091,8 @@ class al
 
 
                 console.log("[" + moment(Date.now()).format("DD-MM-YYYY hh:mm:ssA") + "] [" + `${uuid}] prometheus ApiNotResponding  api call => ${defaultConfig.prometheusApi}ApiNotResponding`);
+
+                
                 axios.get(`${defaultConfig.prometheusApi}ApiNotResponding`,
                 {
                     httpAgent: keepaliveAgent,
