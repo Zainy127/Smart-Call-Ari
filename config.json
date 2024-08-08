@@ -1,0 +1,44 @@
+{
+    "asteriskHost" : "http://192.168.12.88:9088",
+    "asteriskUserName": "asterisk",
+    "asteriskPass": "asterisk",
+
+
+    "trunkName" : "SBCTrunk" ,
+    "payGCharging":"http://10.226.12.155:1001/chargingpayg/",
+    "getSubscriberByPin":"http://10.226.12.147:9999/subscriber/",
+    "postSubscriber":"http://10.226.12.147:9999/subscribers",
+    "getVoiceCallCounter":"http://10.226.12.147:9999/voicecallcounter/",
+
+    "getVoiceCallProcessInfo":"http://10.226.12.147:9999/voicecallprocess/",
+    
+    "getPINProcessInfo":"http://10.226.12.147:9999/pinprocess/",
+    "voiceCallCounter":"500",
+    "updateVoiceCallCounter":"http://10.226.12.147:9999/updatevcallcounter/",
+    "globalBlacklist":"http://10.226.12.147:9999/blackLists/",
+    "userSpecificBlacklist":"http://10.226.12.147:9999/blackLists/",
+    "sendRoutingInfoRequest":"http://10.226.12.136:9755/rabtaengine/SendRoutingInfoRequest/",
+    "InitialDPRequest":"http://10.226.12.136:9755/rabtaengine/InitialDPRequest/",
+    "OAnswer":"http://10.226.12.136:9755/rabtaengine/EventReportBCSMRequestOAnswer/",
+    "ODisconnect":"http://10.226.12.136:9755/rabtaengine/EventReportBCSMRequestODisconnect/",
+    "OAbandon":"http://10.226.12.136:9755/rabtaengine/EventReportBCSMRequestOAbandon/",
+    "OCalledPartyBusy":"http://10.226.12.136:9755/rabtaengine/EventReportBCSMRequestOCalledPartyBusy/",
+    "ONoAnswer":"http://10.226.12.136:9755/rabtaengine/EventReportBCSMRequestONoAnswer/",
+    "ApplyChargingReport":"http://10.226.12.136:9755/rabtaengine/ApplyChargingReport/",
+
+    "soundsDirectory":"sound:",
+
+     
+    "DbUser" : "gr_replicationuser",
+    "DbPass" : "Switch@123@Raabta123",
+    "DbHost" : "127.0.0.1",
+    "DbName" : "jazzraabta",
+    "kafkaClientId" : "raabta-call-6",
+    "kafkaBrokers" : ["10.226.12.149:9092","10.226.12.156:9092","10.226.12.163:9092"],
+    "raabtaShortCode":"2234",
+    "kafkaTopic" : "raabta-incoming-topic",
+    "kafkaProducerId": "",
+    "kafkaProducerTopic": "",
+    "chargeIntervalTime":"15",
+    "prometheusApi":"http://localhost:8070/"
+}

@@ -1,0 +1,43 @@
+{
+  "name": "ADAPTIVE_IVR",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon adoptiveIvr.js",
+    "testDev": "nodemon test.js",
+    "bkk_v2": "node adoptiveIvr.js",
+    "lint": "eslint ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "amqplib": "^0.8.0",
+    "ari-client": "^2.2.0",
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
+    "camelcase-keys": "^7.0.1",
+    "flat": "^5.0.2",
+    "flatten": "^1.0.3",
+    "ip": "^1.1.5",
+    "joi": "^17.4.2",
+    "kafkajs": "^2.2.0",
+    "knex": "^0.95.15",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.1.1",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-schedule": "^2.0.0",
+    "pg": "^8.6.0",
+    "prom-client": "^14.0.1",
+    "redis": "^3.1.2",
+    "util": "^0.12.4",
+    "uuid": "^8.3.2",
+    "yargs": "^17.0.1"
+  }
+}
